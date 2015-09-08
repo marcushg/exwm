@@ -255,12 +255,11 @@ It's updated in several occasions, and only used by `exwm-input--set-focus'.")
                      (memq event exwm-input--global-prefix-keys)
                      (memq event exwm-input-prefix-keys)
                      (memq event exwm-input--simulation-prefix-keys)))
-        (setq mode xcb:Allow:AsyncKeyboard)
-        (unless minibuffer-window (setq exwm-input--during-key-sequence t))
-        (push event unread-command-events))
+        (unless minibuffer-window (setq exwm-input--during-key-sequence t)))
+      (push event unread-command-events)
       (xcb:+request exwm--connection
           (make-instance 'xcb:AllowEvents
-                         :mode (or mode xcb:Allow:ReplayKeyboard)
+                         :mode (or xcb:Allow:AsyncKeyboard xcb:Allow:ReplayKeyboard)
                          :time xcb:Time:CurrentTime))
       (xcb:flush exwm--connection))))
 
